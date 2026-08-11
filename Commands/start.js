@@ -131,9 +131,9 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
   <blockquote><b>🎥 Mʏ Nᴀᴍᴇ: <a href='https://t.me/${botUsername}'>File-Store-Bot</a></b></blockquote>
   <blockquote><b>👨‍💻 Cʀᴇᴀᴛᴏʀ: <a href='https://t.me/SmartBoy_ApnaMS'>MS Bro</a></b></blockquote>
   <blockquote><b>👑 Owner: <a href='https://t.me/Mr_Toxic_1'>Owner 👑</a></b></blockquote>
-  <blockquote><b>💜 Supporter: <a href='https://t.me/Lapat_786'>Sistu 💜</a></b></blockquote>
+  <blockquote><b>💜 Supporter: <a href='https://t.me/Lapata_786'>Sistu 💜</a></b></blockquote>
   <blockquote><b>🤝 Brother: <a href='https://t.me/Mk_khan001'>MK Bro</a></b></blockquote>
-  <blockquote><b>💾 Bᴏᴛ Sᴇʀᴠᴇʀ: <a href='https://render.com'>Render</a></b></blockquote>
+  <blockquote><b>💾 Bᴏᴛ Sᴇʀᴠᴇʀ: <a href='https://render.com'>Render😁</a></b></blockquote>
   <blockquote><b>🚀 Official Channel: <a href='https://t.me/Toxic_Official_1'>Toxic official</a></b></blockquote>
   `;
 
