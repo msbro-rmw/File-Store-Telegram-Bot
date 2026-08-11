@@ -97,7 +97,7 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
               { text: "Developer Info", callback_data: "OwnerInfo" },
               { text: "Legal Disclaimer", callback_data: "legal" },
             ],
-            [{ text: "Update Channel", url: "https://t.me/hivabyte" }],
+            [{ text: "Update Channel", url: "https://t.me/TeamCinderella" }],
           ],
         },
       });
@@ -107,11 +107,11 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
   const OwnerInfo = `
   <b>🌟 Oᴡɴᴇʀ Dᴇᴛᴀɪʟs 🌟</b>
   
-  <b>🧑‍💻 Nᴀᴍᴇ:</b> Shivam Kumar
+  <b>🧑‍💻 Nᴀᴍᴇ:</b> Smarty MS
   
-  <b>📱 Tɢ Uѕᴇʀɴᴀᴍᴇ:</b> <b>@ShivamNox</b> 
+  <b>📱 Tɢ Uѕᴇʀɴᴀᴍᴇ:</b> <b>@SmartBoy_ApnaMS</b> 
   
-  <b>🌐 Pᴏʀtғᴏʟɪᴏ:</b> <b><a href="https://shivamnox.github.io">shivamnox.github.io</a></b> 
+  <b>🌐 Channel:</b> <b><a href="https://t.me/TeamCinderella">Team Cindrella</a></b> 
   
   <b>✨ Cᴏɴnᴇᴄᴛ tᴏ mᴏʀᴇ cʀᴇᴀᴛɪvᴇ jᴏᴜʀɴᴇʏ✨</b> 
   `;
@@ -129,12 +129,12 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
   `;
   const aboutMessage = `
   <blockquote><b>🎥 Mʏ Nᴀᴍᴇ: <a href='https://t.me/${botUsername}'>File-Store-Bot</a></b></blockquote>
-  <blockquote><b>👨‍💻 Cʀᴇᴀᴛᴏʀ: <a href='https://t.me/ShivamNox'>@ShivamNox</a></b></blockquote>
-  <blockquote><b>📚 Lɪʙʀᴀʀʏ: <a href='https://t.me/shivamnox0'>Node</a></b></blockquote>
-  <blockquote><b>💻 Lᴀɴɢᴜᴀɢᴇ: <a href='https://t.me/shivamnox0'>NodeJS</a></b></blockquote>
-  <blockquote><b>🗄️ Dᴀᴛᴀʙᴀsᴇ: <a href='https://mongodb.com'>MongoDB</a></b></blockquote>
-  <blockquote><b>💾 Bᴏᴛ Sᴇʀᴠᴇʀ: <a href='https://shivamnox.github.io'>Hivabytes</a></b></blockquote>
-  <blockquote><b>🔧 Bᴜɪʟᴅ Sᴛᴀᴛᴜs: <a href='https://hivabytes'>3.6.7</a></b></blockquote>
+  <blockquote><b>👨‍💻 Cʀᴇᴀᴛᴏʀ: <a href='https://t.me/SmartBoy_ApnaMS'>MS Bro</a></b></blockquote>
+  <blockquote><b>👑 Owner: <a href='https://t.me/Mr_Toxic_1'>Owner 👑</a></b></blockquote>
+  <blockquote><b>💜 Supporter: <a href='https://t.me/Lapat_786'>Sistu 💜</a></b></blockquote>
+  <blockquote><b>🤝 Brother: <a href='https://t.me/Mk_khan001'>MK Bro</a></b></blockquote>
+  <blockquote><b>💾 Bᴏᴛ Sᴇʀᴠᴇʀ: <a href='https://render.com'>Render</a></b></blockquote>
+  <blockquote><b>🚀 Official Channel: <a href='https://t.me/Toxic_Official_1'>Toxic official</a></b></blockquote>
   `;
 
   const legalText = `
@@ -152,8 +152,8 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
   
   🛡️ By using this bot, you agree to take full responsibility for the content you upload. The developer is not liable for any misuse.
   
-  👨‍💻 Developer: @ShivamNox
-  🔗 Channel: https://t.me/shivamnox0
+  👨‍💻 Developer: @SmartBoy_ApnaMS
+  🔗 Channel: https://t.me/TeamCinderella
   
   Use responsibly and ethically. ✨
   `;
@@ -259,7 +259,7 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
                 { text: "Developer Info", callback_data: "OwnerInfo" },
                 { text: "Legal Disclaimer", callback_data: "legal" },
               ],
-              [{ text: "Update Channel", url: "https://t.me/hivabyte" }],
+              [{ text: "Update Channel", url: "https://t.me/TeamCinderella" }],
             ],
           },
         }
