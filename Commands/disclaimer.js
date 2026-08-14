@@ -16,7 +16,7 @@ module.exports = async function (app, bot, UserModel, OWNER_ID, BotModel) {
   🛡️ By using this bot, you agree to take full responsibility for the content you upload. The developer is not liable for any misuse.
   
   👨‍💻 Developer: @SmartBoy_ApnaMS
-  🔗 Channel: https://t.me/TeamCinderella
+  🔗 Channel: @TeamCinderella
   
   Use responsibly and ethically. ✨
   `;
