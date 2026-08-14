@@ -168,7 +168,8 @@ bot
           createdBy: msg.from.id,
         });
 
-        await singleFile.save();https://t.me/PWSENSEI_FileStoreBot?start=${uniqueId
+        await singleFile.save();
+        const shareLink = `https://t.me/PWSENSEI_FileStoreBot?start=${uniqueId}`;
         const shareLink = `}`;
         bot.sendMessage(
           msg.chat.id,
