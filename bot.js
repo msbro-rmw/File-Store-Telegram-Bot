@@ -65,9 +65,19 @@ const isOwner = (userId) => userId === OWNER_ID;
 // Get bot information asynchronously
 bot
   .getMe()
-  .then((botInfo) => {
+  .then(async (botInfo) => {
     // Now we have the botInfo object
     const botUsername = botInfo.username;
+
+    // Ensure a BotModel settings document always exists.
+    // (Root cause of the /settings command not working: no document was ever
+    // created, so botData.autodel would crash with "Cannot read properties of null".)
+    let botSettingsDoc = await BotModel.findOne();
+    if (!botSettingsDoc) {
+      botSettingsDoc = new BotModel({ autodel: "disable" });
+      await botSettingsDoc.save();
+      console.log("Initialized default BotModel settings document.");
+    }
 
     bot.setMyCommands([
       { command: "start", description: "Start the bot" },
@@ -164,6 +174,11 @@ bot
           msg.chat.id,
           `File saved! Shareable link: ${shareLink}`
         );
+      } else if (!isOwner(msg.from.id)) {
+        bot.sendMessage(
+          msg.chat.id,
+          "Sorry you can't use this feature\nPowerd By: @PW_SENSEI"
+        );
       }
     });
 
@@ -199,6 +214,11 @@ bot
           msg.chat.id,
           `File saved! Shareable link: ${shareLink}`
         );
+      } else if (!isOwner(msg.from.id)) {
+        bot.sendMessage(
+          msg.chat.id,
+          "Sorry you can't use this feature\nPowerd By: @PW_SENSEI"
+        );
       }
     });
 
@@ -231,6 +251,11 @@ bot
           msg.chat.id,
           `Video saved! Shareable link: ${shareLink}`
         );
+      } else if (!isOwner(msg.from.id)) {
+        bot.sendMessage(
+          msg.chat.id,
+          "Sorry you can't use this feature\nPowerd By: @PW_SENSEI"
+        );
       }
     });
 
@@ -262,6 +287,11 @@ bot
         bot.sendMessage(
           msg.chat.id,
           `Audio saved! Shareable link: ${shareLink}`
+        );
+      } else if (!isOwner(msg.from.id)) {
+        bot.sendMessage(
+          msg.chat.id,
+          "Sorry you can't use this feature\nPowerd By: @PW_SENSEI"
         );
       }
     });
