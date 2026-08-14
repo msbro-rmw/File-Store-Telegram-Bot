@@ -19,7 +19,7 @@ module.exports = async function (app, bot, UserModel, OWNER_ID, BotModel) {
       bot.sendMessage(chatId, "Your Bot Settings", {
         reply_markup: {
           inline_keyboard: [
-            [{ text: "Enable Auto Delete", callback_data: "enable_auto_del" }],
+            [{ text: "Tap to Enable Auto Delete", callback_data: "enable_auto_del" }],
           ],
         },
       });
@@ -29,7 +29,7 @@ module.exports = async function (app, bot, UserModel, OWNER_ID, BotModel) {
           inline_keyboard: [
             [
               {
-                text: "Disable Auto Delete",
+                text: "Tap to Disable Auto Delete",
                 callback_data: "disable_auto_del",
               },
             ],
