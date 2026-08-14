@@ -1,9 +1,19 @@
 module.exports = async function (app, bot, UserModel, OWNER_ID, BotModel) {
-  const botData = await BotModel.findOne();
+  let botData = await BotModel.findOne();
+  if (!botData) {
+    // Safety net: bot.js already creates this on startup, but in case
+    // this module ever loads before that finishes, don't crash here.
+    botData = new BotModel({ autodel: "disable" });
+    await botData.save();
+  }
 
   bot.onText(/\/settings/, async (msg) => {
     const chatId = msg.chat.id;
     if (chatId != OWNER_ID) return;
+
+    // Always read the latest value from DB so the menu reflects the
+    // current state even if it was changed elsewhere.
+    botData = (await BotModel.findOne()) || botData;
 
     if (botData.autodel === "disable") {
       bot.sendMessage(chatId, "Your Bot Settings", {

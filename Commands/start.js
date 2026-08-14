@@ -1,4 +1,9 @@
 module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername, START_IMAGE_URL, FileModel, BatchModel ) {
+  // Per-user 10 second cooldown between file requests (see /start handler below).
+  // In-memory is fine here since it's just a UX rate-limit, not critical data.
+  const lastFileRequestAt = new Map();
+  const FILE_REQUEST_COOLDOWN_MS = 10000; // 10 seconds
+
   // Enhanced /start command with greeting, info, and buttons
   bot.onText(/\/start(.*)/, async (msg, match) => {
     const telegramId = msg.from.id;
@@ -9,6 +14,20 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
     const payload = match[1].trim(); // Extracting any start payload (remove any surrounding spaces)
 
     if (payload) {
+      // 10 second cooldown: a user must wait 10s after getting a file before
+      // they can request the next one via a new link.
+      const now = Date.now();
+      const lastAt = lastFileRequestAt.get(telegramId) || 0;
+      const elapsed = now - lastAt;
+
+      if (elapsed < FILE_REQUEST_COOLDOWN_MS) {
+        const remainingSec = Math.ceil((FILE_REQUEST_COOLDOWN_MS - elapsed) / 1000);
+        return bot.sendMessage(
+          msg.chat.id,
+          `⏳ Please wait ${remainingSec} second${remainingSec > 1 ? "s" : ""} for the next file.\n\nThis feature ensures a smooth experience for every Sensei's user.`
+        );
+      }
+
       // If there's a payload, try to fetch file or batch data
       const fileData =
         (await FileModel.findOne({ uniqueId: payload })) ||
@@ -24,6 +43,7 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
                 caption: fileData.caption || fileData.fileName,
               }
             );
+            lastFileRequestAt.set(telegramId, Date.now());
             return;
           }
           // Send a single file
@@ -34,6 +54,7 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
               caption: fileData.caption || fileData.fileName,
             }
           );
+          lastFileRequestAt.set(telegramId, Date.now());
 
           if (botData.autodel === "disable") return;
 
@@ -58,10 +79,13 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
               caption: file.caption || file.fileName,
             });
             sentMessages.push(sentMsg.message_id);
-            // Wait 1.5 seconds before sending the next file, except after the last one
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            // Auto-share the next file after 10 seconds — user can't manually
+            // request each file individually inside a batch, so this is done
+            // automatically, except after the last one.
+            await new Promise((resolve) => setTimeout(resolve, 10000));
           }
 
+          lastFileRequestAt.set(telegramId, Date.now());
           bot.sendMessage(msg.chat.id, "successfully Sent all Files of Batch.");
 
           if (botData.autodel !== "disable") {
