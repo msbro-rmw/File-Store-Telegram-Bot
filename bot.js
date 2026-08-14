@@ -169,8 +169,7 @@ bot
         });
 
         await singleFile.save();
-        const shareLink = `https://t.me/PWSENSEI_FileStoreBot?start=${uniqueId}`;
-        const shareLink = `}`;
+        const shareLink = `https://t.me/Nawaab_FileStoreBot?start=${uniqueId}`;
         bot.sendMessage(
           msg.chat.id,
           `File saved! Shareable link: ${shareLink}`
@@ -210,7 +209,7 @@ bot
         });
 
         await singleFile.save();
-        const shareLink = `https://t.me/PWSENSEI_FileStoreBot?start=${uniqueId}`;
+        const shareLink = `https://t.me/Nawaab_FileStoreBot?start=${uniqueId}`;
         bot.sendMessage(
           msg.chat.id,
           `File saved! Shareable link: ${shareLink}`
@@ -247,7 +246,7 @@ bot
         });
 
         await singleFile.save();
-        const shareLink = `https://t.me/PWSENSEI_FileStoreBot?start=${uniqueId}`;
+        const shareLink = `https://t.me/Nawaab_FileStoreBot?start=${uniqueId}`;
         bot.sendMessage(
           msg.chat.id,
           `Video saved! Shareable link: ${shareLink}`
@@ -284,7 +283,7 @@ bot
         });
 
         await singleFile.save();
-        const shareLink = `https://t.me/PWSENSEI_FileStoreBot?start=${uniqueId}`;
+        const shareLink = `https://t.me/Nawaab_FileStoreBot?start=${uniqueId}`;
         bot.sendMessage(
           msg.chat.id,
           `Audio saved! Shareable link: ${shareLink}`
@@ -318,7 +317,7 @@ bot
         await batchData.save();
 
         // Generate the shareable link
-        const shareLink = `https://t.me/PWSENSEI_FileStoreBot?start=${currentBatchId}`;
+        const shareLink = `https://t.me/Nawaab_FileStoreBot?start=${currentBatchId}`;
         bot.sendMessage(
           msg.chat.id,
           `Batch saved successfully! Shareable link: ${shareLink}`
