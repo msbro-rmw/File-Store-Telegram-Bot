@@ -1,4 +1,4 @@
-module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername, START_IMAGE_URL, FileModel, BatchModel ) {
+module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername, START_IMAGE_URL, FileModel, BatchModel, LectureModel ) {
   // Per-user 10 second cooldown between file requests (see /start handler below).
   // In-memory is fine here since it's just a UX rate-limit, not critical data.
   const lastFileRequestAt = new Map();
@@ -26,6 +26,42 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
           msg.chat.id,
           `⏳ Please wait ${remainingSec} second${remainingSec > 1 ? "s" : ""} for the next file.\n\nThis feature ensures a smooth experience for every Sensei's user.`
         );
+      }
+
+      // ── PW Live System: recorded lecture video (telegram_file_id se) ──
+      // Live class end hone par backend ne video ek baar upload karke
+      // file_id save kar diya hota hai — yahan se turant send hota hai.
+      if (LectureModel) {
+        const lecture = await LectureModel.findOne({ token: payload });
+        if (lecture) {
+          if (lecture.status !== "READY" || !lecture.telegram_file_id) {
+            return bot.sendMessage(
+              msg.chat.id,
+              "⏳ Ye class abhi process ho rahi hai. Thodi der baad same link se dobara try karo.\n\nPowerd By: @PW_SENSEI"
+            );
+          }
+          lastFileRequestAt.set(telegramId, Date.now());
+          const sentLecture = await bot.sendVideo(
+            msg.chat.id,
+            lecture.telegram_file_id,
+            {
+              caption: `🎬 ${lecture._id}\n\n✅ Quality Education 💎\nPowerd By: @PW_SENSEI`,
+              supports_streaming: true,
+            }
+          );
+          if (botData && botData.autodel !== "disable") {
+            bot.sendMessage(
+              msg.chat.id,
+              "🚨 Note: \n\nThis media message will be deleted after 10 minutes. Please save or forward it to your personal saved messages to avoid losing it!"
+            );
+            setTimeout(() => {
+              bot
+                .deleteMessage(msg.chat.id, sentLecture.message_id)
+                .catch((err) => console.error("Failed to delete message:", err));
+            }, 600000);
+          }
+          return;
+        }
       }
 
       // If there's a payload, try to fetch file or batch data
