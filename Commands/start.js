@@ -4,6 +4,19 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
   const lastFileRequestAt = new Map();
   const FILE_REQUEST_COOLDOWN_MS = 10000; // 10 seconds
 
+  // Class "name" (_id) ek URL-safe slug hai (spaces -> hyphens). Display ke
+  // liye (caption mein) hyphen(-)/underscore(_) ko wapas space se replace
+  // karke clean title banate hain — pw-live-proxy (utils/text.py) mein bhi
+  // EXACT same logic hai, dono jagah same result aaye isliye.
+  const cleanTitle = (raw) =>
+    String(raw || "")
+      .replace(/[-_]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+  const lectureCaption = (lecture) =>
+    `📝 Titel: ${cleanTitle(lecture.title || lecture._id)}\n\n📥 Upload By♠: @SmartBoy_ApnaMS`;
+
   // Enhanced /start command with greeting, info, and buttons
   bot.onText(/\/start(.*)/, async (msg, match) => {
     const telegramId = msg.from.id;
@@ -45,7 +58,7 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
             msg.chat.id,
             lecture.telegram_file_id,
             {
-              caption: `🎬 ${lecture._id}\n\n✅ Quality Education 💎\nPowerd By: @PW_SENSEI`,
+              caption: lectureCaption(lecture),
               supports_streaming: true,
             }
           );
