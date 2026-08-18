@@ -92,7 +92,7 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
           );
           lastFileRequestAt.set(telegramId, Date.now());
 
-          if (botData.autodel === "disable") return;
+          if (!botData || botData.autodel === "disable") return;
 
           // Send a message about deletion and set a timeout to delete the message
           bot.sendMessage(
@@ -124,7 +124,7 @@ module.exports = function ( app, bot, UserModel, OWNER_ID, BotModel, botUsername
           lastFileRequestAt.set(telegramId, Date.now());
           bot.sendMessage(msg.chat.id, "successfully Sent all Files of Batch.");
 
-          if (botData.autodel !== "disable") {
+          if (botData && botData.autodel !== "disable") {
             bot.sendMessage(
               msg.chat.id,
               "🚨 Note: \n\nThese media messages will be deleted after 10 minutes. Please save or forward them to your personal saved messages to avoid losing them!"
