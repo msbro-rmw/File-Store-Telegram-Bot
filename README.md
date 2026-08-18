@@ -1,121 +1,22 @@
-# 📁 File Store Telegram Bot
+# File-Store Telegram Bot (Updated) 🤖
 
-A simple and efficient Node.js Telegram bot to **store files** and generate **permanent shareable links**. Easily upload files via Telegram and share them through unique URLs.
+Original file-store bot + **PW Live System integration**.
 
----
+## Kya naya hai
 
-## ✨ Features
+`/start <token>` pe ab bot pehle `lectures` collection check karta hai:
 
-- 📤 Upload and store files via Telegram
-- 🔗 Get permanent download/share links
-- ⚡ Fast, lightweight, and easy to deploy
-- 🔒 Safe and secure file handling
-- 🆓 Completely free and open-source
+- **Token mila + status READY** → saved `telegram_file_id` se **turant video** bhejta hai (dobara upload nahi hota).
+- **Token mila + abhi PROCESSING** → user ko "thodi der baad try karo" message.
+- **Token nahi mila** → purana file/batch logic normally chalta hai (kuch break nahi hua).
 
----
+## Setup
 
-## 📂 Project Structure
+1. `MONGO_URI` aur `MONGO_DB_NAME` env vars **pw-live-system service ke same** rakho — dono ek hi database ki `lectures` collection share karte hain.
+2. pw-live-system mein `TELEGRAM_BOT_TOKEN` isi bot ka token aur `TELEGRAM_CHAT_ID` wo chat jahan backend recordings upload karega (bot wahan member/admin hona chahiye).
+3. pw-live-system mein `TELEGRAM_BOT_USERNAME` ko is bot ke username pe set karo, taaki website ka "⬇ Download Now" button sahi deep link banaye:
+   `https://t.me/<bot_username>?start=<token>`
 
-```
+## Baaki sab
 
-📁 File-Store-Telegram-Bot/
-├── 📁 commands/                  # All bot command modules
-│   ├── commands.js              # Possibly a command handler or aggregator
-│   ├── disclaimer.js            # Handles /disclaimer command
-│   ├── settings.js              # Handles /settings command
-│   └── start.js                 # Handles /start command
-│
-├── bot.js                       # Main bot logic and entry point
-├── config.js                    # Bot configuration (or use .env)
-├── package.json                 # Project metadata and dependencies
-├── package-lock.json            # Lock file for npm
-├── README.md                    # Project documentation
-└── .gitignore                   # Ignored files for git (e.g., node_modules, .env)
-
-````
-
----
-
-## 🛠️ Installation & Setup
-
-### 📦 Requirements
-
-- Node.js v16+ and npm
-- Telegram Bot Token from [@BotFather](https://t.me/BotFather)
-- Optional: A public server or hosting platform (for link access)
-
----
-
-### ⚙️ Getting Started
-
-1. **Clone the Repository**
-
-```bash
-git clone https://github.com/yourusername/File-Store-Telegram-Bot.git
-cd File-Store-Telegram-Bot
-````
-
-2. **Install Dependencies**
-
-```bash
-npm install
-```
-
-3. **Configure Environment**
-
-Create a `.env` file in the root directory:
-
-```env
-BOT_TOKEN=your_telegram_bot_token
-MONGO_URI=you_mongoDB_URI
-OWNER_ID=Owner_ID (Your Telegram ID)
-START_IMAGE_URL=A_image_url
-```
-
-4. **Run the Bot**
-
-```bash
-node bot.js
-```
-
-> You’re up and running! 🎉
-
----
-
-## 🧑‍💻 Deployment
-
-You can deploy the bot on:
-
-* **VPS** (using PM2, forever, or screen)
-* **Render**, **Railway**, or **Heroku** (Node buildpack)
-* **Glitch/Replit** (for small-scale usage)
-
----
-
-## 🔐 Environment Variables
-
-| Variable           | Description                     |
-| ------------------ | ------------------------------- |
-| `BOT_TOKEN`        | Your Telegram bot token         |
-| `MONGO_URI`        | MongoDB URI                     |
-| `OWNER_ID`         | Bot Owner ID                    |
-| `START_IMAGE_URL`  | A Image Url                     |                |
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to fork this repo, make changes, and submit a pull request.
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**.
-
----
-
-## 🙋‍♂️ Support
-
-If you like this project, give it a ⭐ on GitHub and share it!
-For help or suggestions, feel
+Purane features (single file, batch, broadcast, settings, autodel) as-it-is kaam karte hain.

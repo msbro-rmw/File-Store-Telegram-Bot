@@ -7,7 +7,13 @@ const { BOT_TOKEN, MONGO_URI, OWNER_ID, START_IMAGE_URL } = require("./config");
 
 mongoose.set('strictQuery', true); // or false, depending on your preference
 mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    // IMPORTANT: pw-live-system aur bot SAME database use karein (lectures
+    // collection share hoti hai). Dono jagah MONGO_DB_NAME same set karo.
+    ...(process.env.MONGO_DB_NAME ? { dbName: process.env.MONGO_DB_NAME } : {}),
+  })
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
@@ -47,6 +53,26 @@ const batchSchema = new mongoose.Schema({
 
 const FileModel = mongoose.model("File", fileSchema);
 const BatchModel = mongoose.model("Batch", batchSchema);
+
+// ── PW Live System: recorded lecture videos ──────────────────────────────
+// Jab live class end hoti hai, pw-live-system backend video ko Telegram pe
+// EK BAAR upload karke isi collection me file_id save karta hai.
+// Phir /start <token> pe bot turant saved file_id se video bhej deta hai —
+// dobara upload nahi hota.
+// NOTE: ye collection pw-live-system ke SAME MongoDB database me hoti hai,
+// isliye config.js ka MONGO_URI dono services me same hona chahiye.
+const lectureSchema = new mongoose.Schema(
+  {
+    _id: String, // class name (slug)
+    token: String, // deep-link token (?start=<token>)
+    telegram_file_id: String,
+    duration: Number,
+    status: String, // LIVE / RECORDING / PROCESSING / READY / ERROR
+  },
+  { collection: "lectures", strict: false }
+);
+
+const LectureModel = mongoose.model("Lecture", lectureSchema);
 
 // Bot setup
 const app = express();
@@ -441,7 +467,8 @@ bot
       botUsername,
       START_IMAGE_URL,
       FileModel,
-      BatchModel
+      BatchModel,
+      LectureModel
     );
     // Express server for webhook or other purposes
     app.listen(3000, () => {
