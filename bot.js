@@ -67,6 +67,7 @@ const lectureSchema = new mongoose.Schema(
     token: String, // deep-link token (?start=<token>)
     telegram_file_id: String,
     duration: Number,
+    title: String, // clean display title (hyphens/underscores -> spaces), pw-live-proxy se aata hai
     status: String, // LIVE / RECORDING / PROCESSING / READY / ERROR
   },
   { collection: "lectures", strict: false }
