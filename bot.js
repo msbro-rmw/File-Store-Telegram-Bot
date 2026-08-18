@@ -78,6 +78,43 @@ const LectureModel = mongoose.model("Lecture", lectureSchema);
 const app = express();
 const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 
+// Handle polling errors properly instead of letting them spam the logs
+// forever. Previously there was no "polling_error" listener, so every
+// failed poll (e.g. an invalid/revoked BOT_TOKEN) printed an
+// "ETELEGRAM: 401 Unauthorized" line and immediately retried, flooding the
+// logs indefinitely with no way to recover.
+let consecutiveAuthFailures = 0;
+bot.on("polling_error", (error) => {
+  const code = error && (error.code || (error.response && error.response.statusCode));
+  const isUnauthorized =
+    code === "ETELEGRAM" && /401/.test(error.message || "");
+
+  if (isUnauthorized) {
+    consecutiveAuthFailures++;
+    // Log once clearly, then stop hammering Telegram's API with a token
+    // that is guaranteed to keep failing. Only log every 10th repeat after
+    // the first few so the log stays readable if this ever regresses.
+    if (consecutiveAuthFailures <= 3 || consecutiveAuthFailures % 10 === 0) {
+      console.error(
+        "❌ Telegram rejected BOT_TOKEN (401 Unauthorized). The token is invalid, revoked, or expired.\n" +
+          "   Get a fresh token from @BotFather and update the BOT_TOKEN environment variable, then restart the service."
+      );
+    }
+    if (consecutiveAuthFailures === 3) {
+      // Give up retrying a token that clearly isn't going to start working
+      // on its own — stop polling so the process stops spamming logs, but
+      // keep the process alive (Express server, etc. still run).
+      bot.stopPolling();
+      console.error(
+        "⛔ Stopped polling after repeated 401 errors to avoid spamming logs. Fix BOT_TOKEN and redeploy/restart."
+      );
+    }
+    return;
+  }
+
+  console.error("Polling error:", error.message || error);
+});
+
 let isBatchActive = false;
 let batchFiles = [];
 let currentBatchId = null;
